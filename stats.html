@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics | FocusFlow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#B5EAD7',
+                        secondary: '#C7CEEA',
+                        accent: '#FFDAC1',
+                        dark: '#333333',
+                        light: '#F9F9F9'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F9F9F9;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-dark">Focus<span class="text-primary">Flow</span></h1>
+            <nav class="hidden md:flex space-x-8">
+                <a href="index.html" class="text-dark font-medium hover:text-primary transition">Start</a>
+                <a href="tasks.html" class="text-dark font-medium hover:text-primary transition">Tasks</a>
+                <a href="#" class="text-primary font-medium">Statistics</a>
+            </nav>
+            <button class="md:hidden" id="mobile-menu-button">
+                <i data-feather="menu"></i>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-white py-2 px-4 shadow-md" id="mobile-menu">
+            <a href="index.html" class="block py-2 text-dark hover:text-primary">Start</a>
+            <a href="tasks.html" class="block py-2 text-dark hover:text-primary">Tasks</a>
+            <a href="#" class="block py-2 text-primary">Statistics</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <h2 class="text-2xl font-bold text-dark mb-8">Your Productivity Stats</h2>
+
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-lg p-6" data-aos="fade-up">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-primary bg-opacity-20 mr-4">
+                        <i data-feather="clock" class="text-primary"></i>
+                    </div>
+                    <div>
+                        <p class="text-gray-500">Total Focus Time</p>
+                        <h3 class="text-2xl font-bold text-dark">12.5 hours</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6" data-aos="fade-up" data-aos-delay="50">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-secondary bg-opacity-20 mr-4">
+                        <i data-feather="coffee" class="text-secondary"></i>
+                    </div>
+                    <div>
+                        <p class="text-gray-500">Total Break Time</p>
+                        <h3 class="text-2xl font-bold text-dark">2.5 hours</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-accent bg-opacity-20 mr-4">
+                        <i data-feather="check-circle" class="text-accent"></i>
+                    </div>
+                    <div>
+                        <p class="text-gray-500">Tasks Completed</p>
+                        <h3 class="text-2xl font-bold text-dark">24</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weekly Focus Chart -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8" data-aos="fade-up">
+            <h3 class="text-lg font-semibold text-dark mb-4">Weekly Focus Time</h3>
+            <div class="chart-container">
+                <canvas id="weeklyChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Daily Breakdown -->
+        <div class="bg-white rounded-xl shadow-lg p-6" data-aos="fade-up">
+            <h3 class="text-lg font-semibold text-dark mb-4">Daily Breakdown</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="text-left text-gray-500 border-b">
+                            <th class="pb-3">Date</th>
+                            <th class="pb-3">Focus Time</th>
+                            <th class="pb-3">Break Time</th>
+                            <th class="pb-3">Tasks Completed</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <tr>
+                            <td class="py-3">Today</td>
+                            <td class="py-3 font-medium">2.5 hours</td>
+                            <td class="py-3">30 minutes</td>
+                            <td class="py-3">4</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3">Yesterday</td>
+                            <td class="py-3 font-medium">3 hours</td>
+                            <td class="py-3">45 minutes</td>
+                            <td class="py-3">6</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3">May 20</td>
+                            <td class="py-3 font-medium">2 hours</td>
+                            <td class="py-3">25 minutes</td>
+                            <td class="py-3">3</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3">May 19</td>
+                            <td class="py-3 font-medium">1.5 hours</td>
+                            <td class="py-3">20 minutes</td>
+                            <td class="py-3">2</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3">May 18</td>
+                            <td class="py-3 font-medium">3.5 hours</td>
+                            <td class="py-3">50 minutes</td>
+                            <td class="py-3">7</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize AOS and Feather Icons
+        AOS.init();
+        feather.replace();
+
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Weekly Chart
+        const weeklyCtx = document.getElementById('weeklyChart').getContext('2d');
+        const weeklyChart = new Chart(weeklyCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [
+                    {
+                        label: 'Focus Time',
+                        data: [2.5, 3, 2, 3.5, 4, 1, 0.5],
+                        backgroundColor: '#B5EAD7',
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Break Time',
+                        data: [0.5, 0.75, 0.5, 0.75, 1, 0.25, 0.1],
+                        backgroundColor: '#C7CEEA',
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Hours'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
