@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusFlow | Productivity App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#B5EAD7',
+                        secondary: '#C7CEEA',
+                        accent: '#FFDAC1',
+                        dark: '#333333',
+                        light: '#F9F9F9'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F9F9F9;
+        }
+        .timer-circle {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border: 15px solid #B5EAD7;
+        }
+        @media (max-width: 640px) {
+            .timer-circle {
+                width: 250px;
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-dark">Focus<span class="text-primary">Flow</span></h1>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#" class="text-dark font-medium hover:text-primary transition">Start</a>
+                <a href="tasks.html" class="text-dark font-medium hover:text-primary transition">Tasks</a>
+                <a href="stats.html" class="text-dark font-medium hover:text-primary transition">Statistics</a>
+            </nav>
+            <button class="md:hidden" id="mobile-menu-button">
+                <i data-feather="menu"></i>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-white py-2 px-4 shadow-md" id="mobile-menu">
+            <a href="#" class="block py-2 text-dark hover:text-primary">Start</a>
+            <a href="tasks.html" class="block py-2 text-dark hover:text-primary">Tasks</a>
+            <a href="stats.html" class="block py-2 text-dark hover:text-primary">Statistics</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 flex flex-col items-center">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-dark mb-2">Stay Focused, Stay Productive</h2>
+            <p class="text-gray-600 max-w-md mx-auto">Boost your productivity with timed focus sessions and strategic breaks.</p>
+        </div>
+
+        <!-- Timer Section -->
+        <div class="bg-white rounded-xl shadow-lg p-8 w-full max-w-2xl">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="mb-8 md:mb-0">
+                    <div class="timer-circle flex items-center justify-center mx-auto mb-6">
+                        <span id="timer-display" class="text-5xl font-bold text-dark">25:00</span>
+                    </div>
+                    <div class="flex justify-center space-x-4">
+                        <button id="start-timer" class="bg-primary hover:bg-opacity-90 text-white px-6 py-2 rounded-full font-medium transition">
+                            Start Focus
+                        </button>
+                        <button id="pause-timer" class="bg-secondary hover:bg-opacity-90 text-white px-6 py-2 rounded-full font-medium transition hidden">
+                            Pause
+                        </button>
+                    </div>
+                </div>
+
+                <div class="w-full md:w-auto">
+                    <h3 class="text-xl font-semibold text-dark mb-4">Session Settings</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-gray-600 mb-1">Focus Duration</label>
+                            <select id="focus-duration" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="5">5 minutes</option>
+                                <option value="10">10 minutes</option>
+                                <option value="15">15 minutes</option>
+                                <option value="20">20 minutes</option>
+                                <option value="25" selected>25 minutes</option>
+                                <option value="30">30 minutes</option>
+                                <option value="45">45 minutes</option>
+                                <option value="50">50 minutes</option>
+                                <option value="60">60 minutes</option>
+                                <option value="75">75 minutes</option>
+                                <option value="90">90 minutes</option>
+                                <option value="120">120 minutes</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-600 mb-1">Break Duration</label>
+                            <select id="break-duration" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="1">1 minute</option>
+                                <option value="2">2 minutes</option>
+                                <option value="3">3 minutes</option>
+                                <option value="5" selected>5 minutes</option>
+                                <option value="10">10 minutes</option>
+                                <option value="15">15 minutes</option>
+                                <option value="20">20 minutes</option>
+                                <option value="30">30 minutes</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Task Add -->
+        <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-2xl mt-8">
+            <h3 class="text-xl font-semibold text-dark mb-4">Quick Add Task</h3>
+            <div class="flex">
+                <input type="text" id="quick-task-input" placeholder="What needs to be done?" class="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                <button id="add-quick-task" class="bg-primary hover:bg-opacity-90 text-white px-4 py-2 rounded-r-lg font-medium transition">
+                    Add
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Break Modal -->
+    <div id="break-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4 text-center">
+            <div class="text-5xl mb-6">🎉</div>
+            <h3 class="text-2xl font-bold text-dark mb-4">Time for a Break!</h3>
+            <p class="text-gray-600 mb-6">You've completed your focus session. Take <span id="break-time-display" class="font-bold">5 minutes</span> to stretch and relax.</p>
+            <button id="start-break" class="bg-primary hover:bg-opacity-90 text-white px-6 py-2 rounded-full font-medium transition w-full">
+                Start Break
+            </button>
+        </div>
+    </div>
+
+    <audio id="alarm-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3" preload="auto"></audio>
+    
+    <script>
+        // Initialize AOS and Feather Icons
+        AOS.init();
+        feather.replace();
+
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Timer Logic
+        let timerInterval;
+        let timeLeft = parseInt(document.getElementById('focus-duration').value) * 60; // Initial time from selected duration
+        let isRunning = false;
+        let isBreak = false;
+
+        const timerDisplay = document.getElementById('timer-display');
+        const startButton = document.getElementById('start-timer');
+        const pauseButton = document.getElementById('pause-timer');
+        const focusDuration = document.getElementById('focus-duration');
+        const breakDuration = document.getElementById('break-duration');
+        const breakModal = document.getElementById('break-modal');
+        const breakTimeDisplay = document.getElementById('break-time-display');
+        const startBreakButton = document.getElementById('start-break');
+        const alarmSound = document.getElementById('alarm-sound');
+
+        // Initialize timer display with selected focus duration
+        updateTimerDisplay();
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            if (!isRunning) {
+                isRunning = true;
+                startButton.classList.add('hidden');
+                pauseButton.classList.remove('hidden');
+                
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    updateTimerDisplay();
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        isRunning = false;
+                        
+                        if (!isBreak) {
+                            // Focus session ended, start break
+                            isBreak = true;
+                            const breakMinutes = parseInt(breakDuration.value);
+                            breakTimeDisplay.textContent = `${breakMinutes} minute${breakMinutes !== 1 ? 's' : ''}`;
+                            breakModal.classList.remove('hidden');
+                            document.getElementById('alarm-sound').play();
+                        } else {
+                            // Break ended, reset to focus
+                            isBreak = false;
+                            resetTimer();
+                            startButton.textContent = 'Start Focus';
+                            startButton.classList.remove('hidden');
+                            pauseButton.classList.add('hidden');
+                            document.getElementById('alarm-sound').play();
+                        }
+                    }
+                }, 1000);
+            }
+        }
+
+        function pauseTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            startButton.classList.remove('hidden');
+            pauseButton.classList.add('hidden');
+        }
+
+        function resetTimer() {
+            const duration = isBreak ? parseInt(breakDuration.value) : parseInt(focusDuration.value);
+            timeLeft = duration * 60;
+            updateTimerDisplay();
+            
+            // Update button text based on current mode
+            if (isBreak) {
+                startButton.textContent = 'Start Break';
+            } else {
+                startButton.textContent = 'Start Focus';
+            }
+        }
+
+        startButton.addEventListener('click', startTimer);
+        pauseButton.addEventListener('click', pauseTimer);
+
+        focusDuration.addEventListener('change', function() {
+            if (!isBreak && !isRunning) {
+                timeLeft = parseInt(this.value) * 60;
+                updateTimerDisplay();
+            }
+        });
+
+        breakDuration.addEventListener('change', function() {
+            if (isBreak && !isRunning) {
+                timeLeft = parseInt(this.value) * 60;
+                updateTimerDisplay();
+            }
+        });
+
+        startBreakButton.addEventListener('click', function() {
+            breakModal.classList.add('hidden');
+            timeLeft = parseInt(breakDuration.value) * 60;
+            isBreak = true;
+            updateTimerDisplay();
+            startButton.textContent = 'Start Break';
+            startButton.classList.remove('hidden');
+            pauseButton.classList.add('hidden');
+            alarmSound.pause();
+            alarmSound.currentTime = 0;
+        });
+
+        // Quick Task Add
+        const quickTaskInput = document.getElementById('quick-task-input');
+        const addQuickTaskButton = document.getElementById('add-quick-task');
+
+        addQuickTaskButton.addEventListener('click', function() {
+            if (quickTaskInput.value.trim() !== '') {
+                // In a real app, you would add this to your task list
+                alert(`Task "${quickTaskInput.value}" added!`);
+                quickTaskInput.value = '';
+            }
+        });
+
+        quickTaskInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addQuickTaskButton.click();
+            }
+        });
+    </script>
+</body>
+</html>
+
